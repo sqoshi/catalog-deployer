@@ -38,7 +38,7 @@ func displayEntityByPath(c *gin.Context) {
 func RunApi() {
 	router := gin.Default()
 	router.GET("/:path", displayEntityByPath)
-	err := router.Run("localhost:8080")
+	err := router.Run("0.0.0.0:8080")
 	if err != nil {
 		log.Fatal(err)
 		return
