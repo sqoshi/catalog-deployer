@@ -8,12 +8,14 @@ import (
 	"strings"
 )
 
+// Entity is a directory or File representation
 type Entity struct {
 	Name    string `json:"name"`
 	Type    string `json:"type"`
 	Content string `json:"content"`
 }
 
+// isDir checks if path is a directory
 func isDir(path string) bool {
 	fileInfo, err := os.Stat(path)
 	if err != nil {
@@ -23,6 +25,7 @@ func isDir(path string) bool {
 	return fileInfo.IsDir()
 }
 
+// getFileType gouges file type, after dot suffix
 func getFileType(filename string) string {
 	sep := "."
 	if !strings.Contains(filename, sep) {
@@ -32,6 +35,7 @@ func getFileType(filename string) string {
 	return strings.ToLower(filenameParts[len(filenameParts)-1])
 }
 
+// listEntities lists files and directories under given path
 func listEntities(dirpath string) []string {
 	var entities []string
 	files, err := ioutil.ReadDir(dirpath)
@@ -44,6 +48,7 @@ func listEntities(dirpath string) []string {
 	return entities
 }
 
+// GetEntityInfo creates entity and fills its contents depending on it is a directory or file
 func GetEntityInfo(path string) Entity {
 	var (
 		eType   string
@@ -56,7 +61,7 @@ func GetEntityInfo(path string) Entity {
 	} else {
 		fileContent, err := ioutil.ReadFile(path)
 		if err != nil {
-
+			log.Fatal(err)
 		}
 		eType = getFileType(name)
 		content = string(fileContent)
@@ -67,4 +72,16 @@ func GetEntityInfo(path string) Entity {
 		Type:    eType,
 		Content: content,
 	}
+}
+
+// Exists checks if given path exists
+func Exists(path string) bool {
+	_, err := os.Stat(path)
+	if err == nil {
+		return true
+	}
+	if os.IsNotExist(err) {
+		return false
+	}
+	return false
 }
