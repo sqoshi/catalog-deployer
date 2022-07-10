@@ -39,21 +39,12 @@ func displayRootDir(c *gin.Context) {
 	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "Something went wrong restart service please .."})
 }
 
-// GetEnvOrFallback GetEnv but with default value
-func GetEnvOrFallback(key, fallback string) string {
-	value := os.Getenv(key)
-	if len(value) == 0 {
-		return fallback
-	}
-	return value
-}
-
 // RunAPI deploys api with endpoints
 func RunAPI() {
 	router := gin.Default()
 	router.GET("/", displayRootDir)
 	router.GET("/:path", displayEntityByPath)
-	addr := fmt.Sprintf("%s:%s", GetEnvOrFallback("DEPLOY_HOST", "0.0.0.0"), GetEnvOrFallback("DEPLOY_PORT", "8080"))
+	addr := fmt.Sprintf("%s:%s", system.GetEnvOrFallback("DEPLOY_HOST", "0.0.0.0"), system.GetEnvOrFallback("DEPLOY_PORT", "8080"))
 	err := router.Run(addr)
 	if err != nil {
 		log.Fatal(err)

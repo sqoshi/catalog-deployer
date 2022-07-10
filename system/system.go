@@ -85,3 +85,12 @@ func Exists(path string) bool {
 	}
 	return false
 }
+
+// GetEnvOrFallback GetEnv but with default value
+func GetEnvOrFallback(key, fallback string) string {
+	value := os.Getenv(key)
+	if len(value) == 0 {
+		return fallback
+	}
+	return value
+}
