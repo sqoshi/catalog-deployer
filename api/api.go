@@ -11,6 +11,7 @@ import (
 	"strings"
 )
 
+// RootDirKey Name of environment variable under which path to storage directory is passed
 const RootDirKey = "ROOT_DIR"
 
 // displayEntityByPath displays contents of given path
@@ -38,6 +39,7 @@ func displayRootDir(c *gin.Context) {
 	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "Something went wrong restart service please .."})
 }
 
+// GetEnvOrFallback GetEnv but with default value
 func GetEnvOrFallback(key, fallback string) string {
 	value := os.Getenv(key)
 	if len(value) == 0 {
@@ -46,8 +48,8 @@ func GetEnvOrFallback(key, fallback string) string {
 	return value
 }
 
-// RunApi deploys api with endpoints
-func RunApi() {
+// RunAPI deploys api with endpoints
+func RunAPI() {
 	router := gin.Default()
 	router.GET("/", displayRootDir)
 	router.GET("/:path", displayEntityByPath)

@@ -26,5 +26,5 @@ func main() {
 		log.Fatalf("Storage filepath should be set under env variable %s\n", api.RootDirKey)
 	}
 	createStorageIfNotExists(storage)
-	api.RunApi()
+	api.RunAPI()
 }
